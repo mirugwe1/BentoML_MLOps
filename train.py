@@ -68,6 +68,7 @@ y = sampled_vl_df['suppressed']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+
 model = DecisionTreeClassifier(random_state=42 ,max_depth=6)
 model.fit(X_train,y_train)
 
@@ -76,4 +77,6 @@ model.fit(X_train,y_train)
 saved_model = bentoml.sklearn.save_model("VL_Model",model)
 print(f"Saved Model: {saved_model}")
 
-#tag="vl_model:bol2d4s52cs5gcqz"
+#tag="vl_model:wxa2i4c52c526cqz"
+
+#bentoml models list
