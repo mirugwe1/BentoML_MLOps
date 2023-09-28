@@ -1,0 +1,13 @@
+prefix=/Users/alexmirugwe/Work_Git_Projects/BentoML_MLOps/venv
+exec_prefix=/Users/alexmirugwe/Work_Git_Projects/BentoML_MLOps/venv
+libdir=/Users/alexmirugwe/Work_Git_Projects/BentoML_MLOps/venv/lib
+sharedlibdir=/Users/alexmirugwe/Work_Git_Projects/BentoML_MLOps/venv/lib
+includedir=/Users/alexmirugwe/Work_Git_Projects/BentoML_MLOps/venv/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
