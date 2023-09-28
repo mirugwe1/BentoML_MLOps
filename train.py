@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
 
 
-vl_df = pd.read_csv("viral_load.csv")
+vl_df = pd.read_csv("/Users/alexmirugwe/Work_Git_Projects/data/viral_load.csv")
 
 
 sample_1 = vl_df[vl_df['suppressed'] == 1].sample(n=600000, random_state=42)
