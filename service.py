@@ -11,12 +11,13 @@ decision_tree = bentoml.Service("VL_Classifier",runners=[ml_vl_runner])
 @decision_tree.api(input=NumpyNdarray(),output=NumpyNdarray())
 def classify(input_series: np.ndarray) -> np.ndarray:
     result = ml_vl_runner.predict.run(input_series)
-    #if result == 1:
-    #    print("Suppressed")
-   # else:
-    #    print("Unsuppressed")
+    if result == 1:
+        print("Suppressed")
+    else:
+        print("Unsuppressed")
     
     return result
 
 
 #bentoml serve service.py:decision_tree --reload
+#bentoml serve service.py:decision_tree --port 8080
