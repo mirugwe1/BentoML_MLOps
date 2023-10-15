@@ -68,13 +68,26 @@ y = sampled_vl_df['suppressed']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+param_grid = {
+    "criterion":("gini", "entropy"), 
+    "splitter":("best", "random"), 
+    "max_depth":(list(range(1, 15))), 
+    "min_samples_split":[2, 3, 4, 6, 8,10,12], 
+    "min_samples_leaf":list(range(1, 25)), 
+}
 
-model = DecisionTreeClassifier(random_state=42 ,max_depth=6)
-model.fit(X_train,y_train)
+clf_tree = DecisionTreeClassifier(random_state=42)
+tree_cv = GridSearchCV(clf_tree, param_grid,scoring="accuracy",
+                       n_jobs=-1, verbose=1, cv=10)
+
+tree_cv.fit(X_train, y_train)
+
+#model = DecisionTreeClassifier(random_state=42 ,max_depth=6)
+#model.fit(X_train,y_train)
 
 
 # saving the model to the BentoML local model store
-saved_model = bentoml.sklearn.save_model("VL_Model",model)
+saved_model = bentoml.sklearn.save_model("VL_Model",tree_cv)
 print(f"Saved Model: {saved_model}")
 
 #tag="vl_model:wxa2i4c52c526cqz"
