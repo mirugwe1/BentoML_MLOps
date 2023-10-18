@@ -1,0 +1,55 @@
+from flask import Flask, request, jsonify
+import numpy as np
+import pandas as pd
+import pickle
+
+app = Flask(__name__)
+
+model = pickle.load(open('model.pkl', 'rb'))
+
+gender_mapping = {"female": 0, "male": 1,"f":0,"m":1}
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.get_json()
+
+        # Checking for missing fields
+        required_fields = ['gender', ' age', 'treatment_duration', 'regimen_line','Indication_for_VL_Testing', 'arv_adherence']
+        missing_fields = [field for field in required_fields if field not in data]
+        if missing_fields:
+            return jsonify({"error": f"Missing fields: {', '.join(missing_fields)}"}), 400
+
+        # Pre-process data
+        input_data = {
+            'gender': gender_mapping.get(data['gender'].lower(), -1),  # default to -1 if not found
+            ' age': data[' age'],
+            'treatment_duration': data['treatment_duration'],
+            'regimen_line': data['regimen_line'],
+            'Indication_for_VL_Testing': data['Indication_for_VL_Testing'],
+            'arv_adherence': data['arv_adherence']
+            
+        }
+
+        # Checking if gender mapping was successful
+        if input_data['gender'] == -1:
+            return jsonify({"error": "Invalid gender provided. Use 'male' or 'female'."}), 400
+
+        input_df = pd.DataFrame([input_data])
+
+        prediction = model.predict(input_df)
+
+        # Post-process the results
+        if prediction == 1:
+            result = "Client: Suppressed"
+        else:
+            result = "Client: Unsuppressed"
+
+        return jsonify({"prediction": result})
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+

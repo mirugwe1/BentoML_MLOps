@@ -3,7 +3,6 @@ import bentoml
 from bentoml.io import NumpyNdarray
 
 
-
 ml_vl_runner = bentoml.sklearn.get("VL_Model:latest").to_runner()
 
 #creating a service with name VL_Classifier
